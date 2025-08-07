@@ -1,0 +1,27 @@
+{% load static %}
+
+{% include 'include/heade.html' %}
+<body>
+
+{% include 'include/nave_address.html' %}
+
+
+{% block main %}
+
+{# Main site #}
+
+{% endblock %}
+
+
+{% include 'include/footer.html' %}
+
+{% include 'include/modal.html' %}
+
+
+<!-- JAVASCRIPT FILES -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+</html>
