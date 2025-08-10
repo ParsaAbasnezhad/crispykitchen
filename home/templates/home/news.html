@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block body %}
+{% block main %}
     <main>
         <header class="site-header site-news-header">
             <div class="container">
@@ -27,7 +27,7 @@
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="news-thumb mb-4">
                             <a href="news-detail.html">
-                                <img src="images/news/pablo-merchan-montes-Orz90t6o0e4-unsplash.jpg"
+                                <img src="{% static 'images/news/pablo-merchan-montes-Orz90t6o0e4-unsplash.jpg' %}"
                                      class="img-fluid news-image" alt="">
                             </a>
 
@@ -44,7 +44,7 @@
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="news-thumb mb-4">
                             <a href="news-detail.html">
-                                <img src="images/news/stefan-johnson-xIFbDeGcy44-unsplash.jpg"
+                                <img src="{% static 'images/news/pablo-merchan-montes-Orz90t6o0e4-unsplash.jpg' %}"
                                      class="img-fluid news-image" alt="">
                             </a>
 
@@ -74,7 +74,7 @@
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="news-thumb mb-4">
                             <a href="news-detail.html">
-                                <img src="images/news/gilles-lambert-S_LhjpfIdm4-unsplash.jpg"
+                                <img src="{% static "images/news/gilles-lambert-S_LhjpfIdm4-unsplash.jpg" %}"
                                      class="img-fluid news-image" alt="">
                             </a>
 
@@ -94,7 +94,8 @@
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="news-thumb mb-4">
                             <a href="news-detail.html">
-                                <img src="images/news/ella-olsson-mmnKI8kMxpc-unsplash.jpg" class="img-fluid news-image"
+                                <img src="{% static "images/news/ella-olsson-mmnKI8kMxpc-unsplash.jpg" %}"
+                                     class="img-fluid news-image"
                                      alt="">
                             </a>
 
@@ -113,7 +114,7 @@
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="news-thumb mb-4">
                             <a href="news-detail.html">
-                                <img src="images/news/louis-hansel-GiIiRV0FjwU-unsplash.jpg"
+                                <img src="{% static "images/news/louis-hansel-GiIiRV0FjwU-unsplash.jpg" %}"
                                      class="img-fluid news-image" alt="">
                             </a>
 

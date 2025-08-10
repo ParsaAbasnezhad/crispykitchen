@@ -41,7 +41,7 @@
                             form.</p>
 
                         <p>You are NOT allowed to redistribute the template ZIP file on any template donwnload website.
-                            Please <a href="https://www.tooplate.com/contact" target="_blank">contact us</a> for more
+                            Please <a href="{% url 'contact' %}" target="_blank">contact us</a> for more
                             information.</p>
 
                     </div>
@@ -60,7 +60,7 @@
                     {% for person in team %}
                         <div class="col-lg-4 col-12">
                             <div class="team-thumb">
-                                <img src="{{ person.image }}"
+                                <img src="{{ person.image.url }}"
                                      class="img-fluid team-image" alt="">
 
                                 <div class="team-info">
@@ -80,8 +80,7 @@
                 <div class="row">
 
                     <div class="col-lg-6 col-12">
-                        <img src="images/charles-deluvio-FdDkfYFHqe4-unsplash.jpg" class="img-fluid newsletter-image"
-                             alt="">
+                        <img src="{% static 'images/charles-deluvio-FdDkfYFHqe4-unsplash.jpg' %}" class="img-fluid newsletter-image" alt="">
                     </div>
 
                     <div class="col-lg-6 col-12 d-flex align-items-center mt-5 mt-lg-0 mx-auto">
