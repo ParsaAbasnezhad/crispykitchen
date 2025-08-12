@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from menu.models import Menu
 
@@ -9,3 +9,5 @@ class MenuView(ListView):
     template_name = 'menu/menu.html'
     context_object_name = 'food'
 
+class MenuDetailView(TemplateView):
+    template_name = 'menu/detail_menu.html'
