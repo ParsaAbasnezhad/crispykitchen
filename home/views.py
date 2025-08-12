@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, View, TemplateView
-
-from home.models import Newsletter, TeamMember, CategoryNewsletter, Account, Event
+from django.contrib.auth.decorators import login_required
+from home.models import Newsletter, TeamMember, Event
 from menu.models import Menu
 
 
@@ -11,33 +11,39 @@ class Home(ListView):
     context_object_name = 'menu'
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context['news_home']= Newsletter.objects.order_by('-id')
-        context['event_home']= Event.objects.order_by('-id')
+        context = super().get_context_data(**kwargs)
+        context['news_home'] = Newsletter.objects.order_by('id')
+        context['event_home'] = Event.objects.order_by('id')
         return context
 
 
+class AboutView(View):
+    template_name = 'home/about.html'
 
-
-
-class About(View):
     def get(self, request):
-        team_members = TeamMember.objects.all()
-        return render(request, 'home/about.html', {'team': team_members})
+        team = TeamMember.objects.all()
+        return render(request, self.template_name, {'team': team})
 
     def post(self, request):
         email = request.POST.get('email')
-        Account.objects.create(email=email)
-        return redirect('news')
+        team = TeamMember.objects.all()
+        if email:
+            request.session['user_email'] = email
+            return redirect('news')
+        else:
+            error ='email not found'
+            return render(request, self.template_name, {'error': error, 'team': team})
 
 
-class NewsletterOrEventView(ListView):
-    model = Newsletter
-    context_object_name = 'newses'
-    template_name = 'home/news.html'
+def news_view(request):
+    email = request.session.get('user_email')
+    if not email:
+        return redirect('about')
 
-    def get_context_data(self, **kwargs):
-        context =super().get_context_data(**kwargs)
-        context['event_news']= Event.objects.order_by('-id')
-        return context
+    news_list = Newsletter.objects.all().order_by('-id')
+    events_list = Event.objects.all().order_by('-id')
 
+    return render(request, 'home/news.html', {
+        'news': news_list,
+        'event': events_list
+    })

@@ -6,7 +6,7 @@ class Contact(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=14)
     message = models.TextField()
-    date_time = models.CharField(max_length=20)
+    date_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.full_name} | {self.phone}'

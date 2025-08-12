@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView ,ListView
+from django.views.generic import ListView
 
-from menu.models import *
+from menu.models import Menu
 
 
 class MenuView(ListView):

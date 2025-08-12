@@ -28,7 +28,7 @@
                         <h2 class="mb-lg-5 mb-4">Breakfast Menu</h2>
                     </div>
                     {% for item in food %}
-                        {% if item.category.name == 'breakfast' %}
+                        {% if item.category.name == 'Breakfast' %}
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="menu-thumb">
                                     <img src="{{ item.image.url }}"
@@ -73,7 +73,7 @@
                     </div>
 
                     {% for item in food %}
-                        {% if item.category.name == 'lunch' %}
+                        {% if item.category.name == 'Lunch' %}
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="menu-thumb">
                                     <img src="{{ item.image.url }}"
@@ -118,7 +118,7 @@
                     </div>
 
                     {% for item in food %}
-                        {% if item.category.name == 'dinner' %}
+                        {% if item.category.name == 'Dinner' %}
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="menu-thumb">
                                     <img src="{{ item.image.url }}"
