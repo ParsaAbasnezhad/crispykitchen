@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+
+    <main>
+
+        <header class="site-header site-news-detail-header">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-12">
+                        <h2>Learning a fine dining experience</h2>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <section class="news-detail section-padding pt-0">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12">
+                        <img src="{% static "images/news/news-detail-header.jpg" %}" class="img-fluid news-detail-image"
+                             alt="fine dining experience">
+
+                        <div class="col-lg-10 col-10 mx-auto mt-5">
+
+                            <h4 class="mb-3">The best fine-dining experience at Crispy Kitchen</h4>
+
+                            <p>{{ category.about_kitchen }}</p>
+
+                            <ul class="list">
+                                <li class="list-item">Pasta stats published in the International</li>
+
+                                <li class="list-item">Rice flour, or legumes such as beans</li>
+
+                                <li class="list-item">Belgian family developed major food poisoning symptoms</li>
+                            </ul>
+
+                            <p>{{ category.description }}</p>
+
+                            <h5 class="mt-4 mb-3">About team</h5>
+
+                            <p>{{ category.about_team.description }}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        {% include 'include/comment.html' %}
+        <section class="related-news section-padding bg-white">
+            <div class="container">
+                <div class="row">
+
+                    <h2 class="text-center mb-lg-5 mb-4">Related News</h2>
+
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="news-thumb mb-4">
+                            <a href="news-detail.html">
+                                <img src="{{ category.news_category.image.url }}"
+                                     class="img-fluid news-image" alt="">
+                            </a>
+
+                            <div class="news-text-info">
+                                <span class="category-tag me-3 bg-info">{{ category.news_category.category }}</span>
+
+                                <strong>{{ category.news_category.date }}</strong>
+
+                                <h5 class="news-title mt-2">
+                                    <a href="news-detail.html" class="news-title-link">{{ category.news_category.title }}</a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+{% endblock %}

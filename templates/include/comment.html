@@ -1,0 +1,31 @@
+<section class="comments section-padding">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12">
+                <h4 class="text-center mb-4">Comment Box</h4>
+            </div>
+
+            <div class="col-lg-7 col-12 mx-auto">
+                <form class="custom-form comment-form" action="#" method="get" role="form">
+                    {{ form }}
+                    <div class="col-lg-3 col-4 mx-auto">
+                        <button type="submit" class="form-control" id="subscribe">Submit</button>
+                    </div>
+                </form>
+                {% for comment in comments %}
+                    <div class="news-author d-flex flex-wrap align-items-center">
+                        <div class="ms-4 w-50">
+                            <p class="mb-2">{{ comment.comment }}</p>
+
+                            <a href="#">{{ comment.fullname }}</a>
+                        </div>
+
+                        <span class="ms-auto">{{ comment.date }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</section>

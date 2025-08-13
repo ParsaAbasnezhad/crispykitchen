@@ -12,6 +12,8 @@ class Category(models.Model):
                                       null=True,
                                       blank=True)
     image = models.ImageField(upload_to='category/')
+    about_team = models.ForeignKey(TeamMember, on_delete=models.CASCADE, null=True, blank=True)
+    about_kitchen = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -30,15 +32,13 @@ class Menu(models.Model):
         return self.name
 
 
+
+
 class Comment(models.Model):
-    name = models.CharField(max_length=100)
+    fullname = models.CharField(max_length=100)
     email = models.EmailField()
     comment = models.TextField()
+    date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return self.name
-
-
-class Author(models.Model):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    date = models.DateField(default=timezone.now)
+        return self.fullname
