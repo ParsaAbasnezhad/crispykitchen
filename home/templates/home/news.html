@@ -27,7 +27,7 @@
                     {% for event in event %}
                         <div class="col-lg-6 col-md-6 col-12">
                             <div class="news-thumb mb-4">
-                                <a href="{% url 'menu:category' category.slug %}">
+                                <a href="{% url 'about' %}">
                                     <img src="{{ event.image.url }}"
                                          class="img-fluid news-image" alt="">
                                 </a>
@@ -36,7 +36,7 @@
                                     <span class="category-tag bg-danger">{{ event.category }}</span>
 
                                     <h5 class="news-title mt-2">
-                                        <a href="{% url 'menu:category' category.slug %}" class="news-title-link">{{ event.title }}</a>
+                                        <a href="{% url 'about' %}" class="news-title-link">{{ event.title }}</a>
                                     </h5>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                     {% for news in news %}
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="news-thumb mb-4">
-                                <a href="{% url 'menu:category' category.slug %}">
+                                <a href="{% url 'menu:detail' news.slug %}">
                                     <img src="{{ news.image.url }}"
                                          class="img-fluid news-image" alt="">
                                 </a>
@@ -67,7 +67,7 @@
                                     <strong>{{ news.category }}</strong>
 
                                     <h5 class="news-title mt-2">
-                                        <a href="{% url 'menu:detail' news.id %}" class="news-title-link">{{ news.title }}</a>
+                                        <a href="{% url 'menu:detail' news.slug %}" class="news-title-link">{{ news.title }}</a>
                                     </h5>
                                 </div>
                             </div>

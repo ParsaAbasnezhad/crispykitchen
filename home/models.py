@@ -14,7 +14,6 @@ class CategoryNewsletter(models.Model):
     description = models.TextField()
 
 
-
 class TeamMember(models.Model):
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to='team_members/')
@@ -35,7 +34,8 @@ class Newsletter(models.Model):
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(CategoryNewsletter, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField(default=timezone.now, null=True, blank=True)
-    slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True)
+
     def save(self, *args, **kwargs):
         if not self.title:
             self.slug = slugify(self.title)
