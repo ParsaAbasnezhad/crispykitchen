@@ -3,7 +3,6 @@
 
 {% block main %}
 
-
     <main>
 
         <header class="site-header site-news-detail-header">
@@ -30,8 +29,10 @@
 
                             <h4 class="mb-3">The best fine-dining experience at Crispy Kitchen</h4>
 
-                            <p>{{ category.about_kitchen }}</p>
-
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been the industry's standard dummy text ever since the 1500s, when an unknown
+                                printer took a galley of type and scrambled it to make a type specimen book. It has
+                                survived not only five centuries</p>
                             <ul class="list">
                                 <li class="list-item">Pasta stats published in the International</li>
 
@@ -39,12 +40,11 @@
 
                                 <li class="list-item">Belgian family developed major food poisoning symptoms</li>
                             </ul>
-
-                            <p>{{ category.description }}</p>
-
-                            <h5 class="mt-4 mb-3">About team</h5>
-
-                            <p>{{ category.about_team.description }}</p>
+                            {% for item in team %}
+                                <h5 class="mt-4 mb-3">About team</h5>
+                                <a href="{% url 'about' %}" class="btn-primary ">person team</a>
+                                <p>{{ item.description }}</p>
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -53,6 +53,7 @@
         </section>
 
         {% include 'include/comment.html' %}
+
         <section class="related-news section-padding bg-white">
             <div class="container">
                 <div class="row">
@@ -61,18 +62,19 @@
 
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="news-thumb mb-4">
-                            <a href="news-detail.html">
-                                <img src="{{ category.news_category.image.url }}"
+                            <a href="{% url 'menu:detail' newsletter.slug %}">
+                                <img src="{{ newsletter.image.url }}"
                                      class="img-fluid news-image" alt="">
                             </a>
 
                             <div class="news-text-info">
-                                <span class="category-tag me-3 bg-info">{{ category.news_category.category }}</span>
+                                <span class="category-tag me-3 bg-info">{{ newsletter.category }}</span>
 
-                                <strong>{{ category.news_category.date }}</strong>
+                                <strong>{{ newsletter.date }}</strong>
 
                                 <h5 class="news-title mt-2">
-                                    <a href="news-detail.html" class="news-title-link">{{ category.news_category.title }}</a>
+                                    <a href="{% url 'menu:detail' newsletter.slug %}"
+                                       class="news-title-link">{{ newsletter.title }}</a>
                                 </h5>
                             </div>
                         </div>

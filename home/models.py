@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.text import slugify
+from django.utils import timezone
 
 
 class CategoryEvent(models.Model):
@@ -11,8 +13,6 @@ class CategoryNewsletter(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField()
 
-    def __str__(self):
-        return self.name
 
 
 class TeamMember(models.Model):
@@ -30,11 +30,19 @@ class Account(models.Model):
 
 
 class Newsletter(models.Model):
-    title = models.CharField(max_length=30,null=True,blank=True)
-    image = models.ImageField(upload_to='newsletters/',null=True, blank=True)
+    title = models.CharField(max_length=30, null=True, blank=True)
+    image = models.ImageField(upload_to='newsletters/', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(CategoryNewsletter, on_delete=models.CASCADE, null=True, blank=True)
-    date = models.DateTimeField(null=True, blank=True)
+    date = models.DateField(default=timezone.now, null=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
+    def save(self, *args, **kwargs):
+        if not self.title:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 
 class Event(models.Model):

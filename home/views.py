@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, View, TemplateView
-from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, View
+
 from home.models import Newsletter, TeamMember, Event
 from menu.models import Menu
 
@@ -31,7 +31,7 @@ class AboutView(View):
             request.session['user_email'] = email
             return redirect('news')
         else:
-            error ='email not found'
+            error = 'email not found'
             return render(request, self.template_name, {'error': error, 'team': team})
 
 

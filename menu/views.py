@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, View
+
+from home.models import Newsletter, TeamMember
 from menu.models import Menu, Category, Comment
 from .forms import CommentForm
 
@@ -10,29 +12,24 @@ class MenuView(ListView):
     context_object_name = 'food'
 
 
-class CategoryDetailView(DetailView):
-    model = Category
-    template_name = 'menu/detail_category.html'
-    context_object_name = 'category'
-    pk_url_kwarg = 'id'
+class NewsDetailView(DetailView):
+    model = Newsletter
+    template_name = 'menu/detail_news.html'
+    context_object_name = 'newsletter'
+    slug_url_kwarg = 'slug'
 
-
-
-
-class CommentView(View):
-    template_name = 'include/comment.html'
-
-    def get(self, request, *args, **kwargs):
-        comments = Comment.objects.all().order_by('-date')
-        form = CommentForm()
-        return render(request, self.template_name, {'comments': comments, 'form': form})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.all().order_by('-date')
+        context['team'] = TeamMember.objects.all()
+        context['form'] = CommentForm()
+        return context
 
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
-        comments = Comment.objects.all().order_by('-date')
-
         if form.is_valid():
             form.save()
-            return redirect('about')
-
-        return render(request, self.template_name, {'comments': comments, 'form': form})
+            return redirect(request.path)
+        context = self.get_context_data()
+        context['form'] = form
+        return self.render_to_response(context)
