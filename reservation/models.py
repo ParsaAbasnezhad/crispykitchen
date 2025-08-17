@@ -34,7 +34,6 @@ class DiningTable(models.Model):
         return f"{self.name} (ظرفیت {self.capacity})"
 
 
-
 class Reservation(models.Model):
     DELIVERY_CHOICES = (
         ("dine_in", "صرف در رستوران"),
@@ -44,13 +43,11 @@ class Reservation(models.Model):
     customer_name = models.CharField(max_length=100)
     customer_phone = models.CharField(max_length=20)
     customer_email = models.EmailField(blank=True)
-    table = models.ForeignKey(DiningTable, on_delete=models.SET_NULL, null=True, blank=True,
-                              related_name="reservations")
 
+    table = models.ForeignKey(DiningTable, on_delete=models.SET_NULL, null=True, blank=True, related_name="reservations")
 
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(help_text="مثلاً 1 یا 2 ساعت بعد از شروع")
-
 
     service_type = models.CharField(max_length=20, choices=DELIVERY_CHOICES, default="dine_in")
     address = models.TextField(blank=True, help_text="برای بیرون‌بر (اختیاری)")
@@ -66,7 +63,6 @@ class Reservation(models.Model):
         ]
 
     def clean(self):
-
         if self.end_time <= self.start_time:
             raise ValidationError("زمان پایان باید بعد از زمان شروع باشد.")
 
@@ -77,8 +73,7 @@ class Reservation(models.Model):
                 end_time__gt=self.start_time,
             ).exclude(pk=self.pk).exists()
             if overlap:
-                raise ValidationError("برای این بازه زمانی، این میز قبلاً رزرو شده است.")
-
+                raise ValidationError("این میز در این بازه زمانی قبلاً رزرو شده است.")
 
         if self.service_type == "take_away" and not self.address:
             raise ValidationError("برای بیرون‌بر، آدرس الزامی است.")

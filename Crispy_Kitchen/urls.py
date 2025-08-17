@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('', include('menu.urls')),
     path('', include('contact.urls')),
+    path('',include('reservation.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
