@@ -19,9 +19,10 @@ class Menu(models.Model):
     original_price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     views = models.IntegerField()
-    score = models.CharField(max_length=4)
+    score = models.FloatField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='menu/')
+
 
     def __str__(self):
         return self.name

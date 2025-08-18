@@ -9,12 +9,15 @@ class Home(ListView):
     template_name = 'home/index.html'
     model = Menu
     context_object_name = 'menu'
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['news_home'] = Newsletter.objects.order_by('id')
         context['event_home'] = Event.objects.order_by('id')
+        context['best_food'] = Menu.objects.filter(score__gt=4)
         return context
+
 
 
 class AboutView(View):

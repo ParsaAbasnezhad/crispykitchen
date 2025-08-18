@@ -35,90 +35,55 @@
                         <div id="carouselExampleCaptions" class="carousel carousel-fade hero-carousel slide"
                              data-bs-ride="carousel">
                             <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="carousel-image-wrap">
-                                        <img src="{% static 'images/slide/jay-wennington-N_Y88TWmGwA-unsplash.jpg' %}"
-                                             class="img-fluid carousel-image" alt="">
-                                    </div>
-
-                                    <div class="carousel-caption">
-                                            <span class="text-white">
-                                                <i class="bi-geo-alt me-2"></i>
-                                                Manhattan, New York
-                                            </span>
-
-                                        <h4 class="hero-text">Fine Dining Restaurant</h4>
-                                    </div>
-                                </div>
-
-                                <div class="carousel-item">
-                                    <div class="carousel-image-wrap">
-                                        <img src="{% static 'images/slide/jason-leung-O67LZfeyYBk-unsplash.jpg' %}"
-                                             class="img-fluid carousel-image" alt="">
-                                    </div>
-
-                                    <div class="carousel-caption">
-                                        <div class="d-flex align-items-center">
-                                            <h4 class="hero-text">Steak</h4>
-
-                                            <span class="price-tag ms-4"><small>$</small>26.50</span>
+                                {% for food in best_food %}
+                                    <div class="carousel-item">
+                                        <div class="carousel-image-wrap">
+                                            <img src="{{ food.image.url }}"
+                                                 class="img-fluid carousel-image" alt="">
                                         </div>
 
-                                        <div class="d-flex flex-wrap align-items-center">
-                                            <h5 class="reviews-text mb-0 me-3">3.8/5</h5>
+                                        <div class="carousel-caption">
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="hero-text">{{ food.name }}</h4>
 
-                                            <div class="reviews-stars">
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star reviews-icon"></i>
-                                                <i class="bi-star reviews-icon"></i>
+                                                <span class="price-tag ms-4"><small>$</small>{{ food.original_price }}</span>
+                                            </div>
+
+                                            <div class="d-flex flex-wrap align-items-center">
+                                                <h5 class="reviews-text mb-0 me-3">{{ food.score }}</h5>
+
+                                                <div class="reviews-stars">
+                                                    <i class="bi-star-fill reviews-icon"></i>
+                                                    <i class="bi-star-fill reviews-icon"></i>
+                                                    <i class="bi-star-fill reviews-icon"></i>
+                                                    <i class="bi-star reviews-icon"></i>
+                                                    <i class="bi-star reviews-icon"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
+                                {% endfor %}
                                 <div class="carousel-item">
                                     <div class="carousel-image-wrap">
                                         <img src="{% static 'images/slide/ivan-torres-MQUqbmszGGM-unsplash.jpg' %}"
                                              class="img-fluid carousel-image" alt="">
                                     </div>
 
-                                    <div class="carousel-caption">
-                                        <div class="d-flex align-items-center">
-                                            <h4 class="hero-text">Sausage Pasta</h4>
-
-                                            <span class="price-tag ms-4"><small>$</small>18.25</span>
-                                        </div>
-
-                                        <div class="d-flex flex-wrap align-items-center">
-                                            <h5 class="reviews-text mb-0 me-3">4.2/5</h5>
-
-                                            <div class="reviews-stars">
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star-fill reviews-icon"></i>
-                                                <i class="bi-star reviews-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-center mt-4">
+                                {% if menu.has_previous %}
+                                    <a class="btn btn-primary" href="?page={{ menu.previous_page_number }}">prev</a>
+                                {% else %}
+                                    <button class="btn btn-primary" disabled>prev</button>
+                                {% endif %}
 
-                            <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-
-                            <button class="carousel-control-next" type="button"
-                                    data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
+                                {% if menu.has_next %}
+                                    <a class="btn btn-primary" href="?page={{ menu.next_page_number }}">next</a>
+                                {% else %}
+                                    <button class="btn btn-primary" disabled>next</button>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
@@ -189,26 +154,46 @@
 
                     <h2 class="text-center mb-lg-5 mb-4">News &amp; Events</h2>
 
+                    {% if event_home %}
+                        {% for event in event_home %}
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="news-thumb mb-4">
+                                    <a href="{% url 'about' %}">
+                                        <img src="{{ event.image.url }}"
+                                             class="img-fluid news-image"
+                                             alt="">
+                                    </a>
 
-                    {% for event in event_home %}
+                                    <div class="news-text-info news-text-info-large">
+                                        <span class="category-tag bg-danger">{{ event.category }}</span>
+
+                                        <h5 class="news-title mt-2">
+                                            <a href="{% url 'about' %}" class="news-title-link">{{ event.title }}</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    {% else %}
                         <div class="col-lg-6 col-md-6 col-12">
                             <div class="news-thumb mb-4">
                                 <a href="{% url 'about' %}">
-                                    <img src="{{ event.image.url }}"
+                                    <img src="{% static 'images/news/news-detail-header.jpg' %}"
                                          class="img-fluid news-image"
                                          alt="">
                                 </a>
 
                                 <div class="news-text-info news-text-info-large">
-                                    <span class="category-tag bg-danger">{{ event.category }}</span>
+                                    <span class="category-tag bg-danger">none event</span>
 
                                     <h5 class="news-title mt-2">
-                                        <a href="{% url 'about' %}" class="news-title-link">{{ event.title }}</a>
+                                        <a href="{% url 'about' %}" class="news-title-link"></a>
                                     </h5>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    {% endif %}
                     {% for news in news_home %}
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="news-thumb mb-4">
