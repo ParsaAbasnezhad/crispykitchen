@@ -22,7 +22,7 @@ class Menu(models.Model):
     score = models.FloatField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='menu/')
-
+    active = models.BooleanField(default=True,null=True, blank=True)
 
     def __str__(self):
         return self.name
