@@ -22,7 +22,7 @@ def reservation_create(request):
 
     else:
         form = ReservationForm()
-        formset = ItemFormSet(queryset=Menu.objects.none())
+        formset = ItemFormSet(queryset=ReservationItem.objects.none())
 
     return render(request, "reservation/reservation_form.html", {"form": form, "formset": formset})
 
