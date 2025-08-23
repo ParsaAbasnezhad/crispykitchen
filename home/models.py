@@ -49,3 +49,36 @@ class Event(models.Model):
     title = models.CharField(max_length=30)
     image = models.ImageField(upload_to='events/')
     category = models.ForeignKey(CategoryEvent, on_delete=models.CASCADE)
+
+
+from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+class Movie(models.Model):  # یا هر مدلی که قراره امتیاز بگیره
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def average_rating(self):
+        ratings = self.ratings.all()
+        if ratings.exists():
+            return round(sum(r.value for r in ratings) / ratings.count(), 1)
+        return 0
+
+    def __str__(self):
+        return self.title
+
+
+class Rating(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="ratings")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratings")
+    value = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])  # 1 تا 5 ستاره
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("movie", "user")
+
+    def __str__(self):
+        return f"{self.movie.title} - {self.user.username}: {self.value}"

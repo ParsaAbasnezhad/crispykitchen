@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, View
-
+from .models import Movie, Rating
+from .forms import RatingForm
 from home.models import Newsletter, TeamMember, Event
 from menu.models import Menu
 
@@ -17,7 +18,6 @@ class Home(ListView):
         context['event_home'] = Event.objects.order_by('id')
         context['best_food'] = Menu.objects.filter(score__gt=4)
         return context
-
 
 
 class AboutView(View):
@@ -49,4 +49,35 @@ def news_view(request):
     return render(request, 'home/news.html', {
         'news': news_list,
         'event': events_list
+    })
+
+
+def movie_detail(request, pk):
+    movie = get_object_or_404(Movie, pk=pk)
+    user_rating = None
+
+    if request.user.is_authenticated:
+        try:
+            user_rating = Rating.objects.get(movie=movie, user=request.user)
+        except Rating.DoesNotExist:
+            user_rating = None
+
+        if request.method == "POST":
+            form = RatingForm(request.POST, instance=user_rating)
+            if form.is_valid():
+                rating = form.save(commit=False)
+                rating.movie = movie
+                rating.user = request.user
+                rating.save()
+                return redirect("movie_detail", pk=movie.pk)
+        else:
+            form = RatingForm(instance=user_rating)
+    else:
+        form = None
+
+    return render(request, "home/index.html", {
+        "movie": movie,
+        "form": form,
+        "user_rating": user_rating,
+        "average_rating": movie.average_rating(),
     })
