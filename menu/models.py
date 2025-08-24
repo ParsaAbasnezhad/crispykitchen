@@ -2,7 +2,6 @@ from django.db import models
 from home.models import *
 
 
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
@@ -18,17 +17,25 @@ class Category(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(max_length=100,verbose_name='غذا')
-    original_price = models.DecimalField(max_digits=10, decimal_places=2,verbose_name="قیمت اصلی")
-    discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True,verbose_name="قیمت با تخفیف")
-    views = models.IntegerField(verbose_name="بازدید")
-    score = models.FloatField(default=0,verbose_name="امتیاز")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,verbose_name="وعده")
-    image = models.ImageField(upload_to='menu/',verbose_name="عکس غذا")
-    active = models.BooleanField(default=True,null=True, blank=True)
+    name = models.CharField(max_length=100)
+    original_price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    views = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='menu/')
+    active = models.BooleanField(default=True, null=True, blank=True)
 
-    def __str__(self):
-        return self.name
+    def average_rating(self):
+        ratings = self.ratings.all()
+        if ratings.exists():
+            return round(sum(r.value for r in ratings) / ratings.count(), 1)
+        return 0
+
+
+class Rating(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name="ratings")
+    value = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(models.Model):
@@ -36,7 +43,6 @@ class Comment(models.Model):
     email = models.EmailField()
     comment = models.TextField()
     date = models.DateField(default=timezone.now, null=True, blank=True)
-
 
     def __str__(self):
         return self.fullname

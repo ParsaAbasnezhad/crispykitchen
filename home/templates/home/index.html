@@ -50,7 +50,7 @@
                                             </div>
 
                                             <div class="d-flex flex-wrap align-items-center">
-                                                <h5 class="reviews-text mb-0 me-3">{{ food.score }}</h5>
+{#                                                <h5 class="reviews-text mb-0 me-3">{{ food.score }}</h5>#}
 
                                                 <div class="reviews-stars">
                                                     <i class="bi-star-fill reviews-icon"></i>
@@ -107,37 +107,29 @@
                     <div class="col-12">
                         <h2 class="text-center mb-lg-5 mb-4">Special Menus</h2>
                     </div>
-                    {% for item in menu %}
+                    {% for item in menus %}
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="menu-thumb">
                                 <div class="menu-image-wrap">
-                                    <img src="{{ item.image }}"
-                                         class="img-fluid menu-image" alt="">
-
+                                    <img src="{{ item.image.url }}" class="img-fluid menu-image" alt="">
                                     <span class="menu-tag bg-warning">{{ item.category.name }}</span>
                                 </div>
 
-                                <div class="menu-info d-flex flex-wrap align-items-center">
-                                    <h4 class="mb-0">{{ item.name }}</h4>
-                                    {% if item.original_price %}
-                                        <span class="price-tag bg-white shadow-lg ms-4"><small>$</small>{{ item.original_price }}</span>
-                                    {% elif item.discount_price %}
-                                        <span class="price-tag bg-white shadow-lg ms-4"><small>$</small>{{ item.original_price }}</span>
-                                        <del class="ms-4"><small>$</small>{{ item.discount_price }}</del>
-                                    {% endif %}
-                                    <div class="d-flex flex-wrap align-items-center w-100 mt-2">
-                                        <h6 class="reviews-text mb-0 me-3">{{ item.score }}</h6>
+                                <div class="menu-info">
+                                    <h4>{{ item.name }}</h4>
+                                    <span>${{ item.original_price }}</span>
 
-                                        <div class="reviews-stars">
-                                            <i class="bi-star-fill reviews-icon"></i>
-                                            <i class="bi-star-fill reviews-icon"></i>
-                                            <i class="bi-star-fill reviews-icon"></i>
-                                            <i class="bi-star reviews-icon"></i>
-                                            <i class="bi-star reviews-icon"></i>
-                                        </div>
-
-                                        <p class="reviews-text mb-0 ms-4">{{ item.views }} Reviews</p>
+                                    <div class="reviews-stars" data-id="{{ item.id }}">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= item.average_rating %}
+                                                <i class="bi-star-fill reviews-icon"
+                                                   data-value="{{ forloop.counter }}"></i>
+                                            {% else %}
+                                                <i class="bi-star reviews-icon" data-value="{{ forloop.counter }}"></i>
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
+                                    <p>امتیاز: <span class="average">{{ item.average_rating }}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -221,5 +213,58 @@
         </section>
 
     </main>
+    <script>
+        document.querySelectorAll('.reviews-stars').forEach(starContainer => {
+            const menuId = starContainer.getAttribute('data-id');
+            const stars = starContainer.querySelectorAll('i');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const value = star.getAttribute('data-value');
+
+                    fetch(`/rate_menu/${menuId}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken"),
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `value=${value}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("امتیاز ثبت شد!");
+
+                                stars.forEach((s, i) => {
+                                    if (i < value) s.classList.add('bi-star-fill');
+                                    else s.classList.remove('bi-star-fill');
+                                    s.classList.add('bi-star');
+                                });
+
+                                starContainer.nextElementSibling.querySelector('.average').textContent = data.average;
+                            } else {
+                                alert(data.error);
+                            }
+                        });
+                });
+            });
+        });
+
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 
 {% endblock %}
